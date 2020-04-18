@@ -114,14 +114,45 @@ try:
     def open():
         interogare = Toplevel()
         interogare.title(e.get())
-        interogare.configure(background='#484848')
-        frame_o = LabelFrame(interogare, padx=100, pady=100)
-        frame_o.pack(padx=10, pady=10)
-        frame_o.configure(background='#5e0061')
+        interogare.configure(background='#5e0061')
 
-        apasa = Button(frame_o, text='oare', padx=80, pady=10).grid(row=0, column=0)
+        # frame_o = LabelFrame(interogare, padx=100, pady=100)
+        # frame_o.pack(padx=10, pady=10)
+        # frame_o.configure(background='#5e0061')
 
-        apasa2 = Button(frame_o, text='oare2', padx=80, pady=10).grid(row=1, column=1)
+        # apasa = Button(frame_o, text='oare', padx=80, pady=10).grid(row=0, column=0)
+
+        # apasa2 = Button(frame_o, text='oare2', padx=80, pady=10).grid(row=1, column=1)
+        def data():
+            for i in range(50):  # len(x.fct())/2
+                Label(frame, text=i).grid(row=i, column=0)
+                Label(frame, text="my text" + str(i)).grid(row=i, column=1)
+                Label(frame, text="..........").grid(row=i, column=2)
+
+        def myfunction(event):
+            canvas.configure(scrollregion=canvas.bbox("all"), width=400, height=400)
+
+        sizex = 800
+        sizey = 600
+        posx = 100
+        posy = 100
+        interogare.wm_geometry("%dx%d+%d+%d" % (sizex, sizey, posx, posy))
+
+        myframe = Frame(interogare, relief=GROOVE, width=50, height=100, bd=1)
+        myframe.place(x=10, y=10)
+
+        myframe.configure(background='#5e0061')
+
+        canvas = Canvas(myframe)
+        frame = Frame(canvas)
+        myscrollbar = Scrollbar(myframe, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=myscrollbar.set)
+
+        myscrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left")
+        canvas.create_window((0, 0), window=frame, anchor='nw')
+        frame.bind("<Configure>", myfunction)
+        data()
 
 
     def click():
