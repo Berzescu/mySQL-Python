@@ -1,8 +1,8 @@
 import mysql.connector
-from mysql.connector import Error
+from mysql.connector import errorcode
 from tkinter import *
 from PIL import ImageTk, Image
-
+from M import Frame_M as f
 try:
     connection = mysql.connector.connect(host ="lefti.cm.upt.ro",
                                          user = "berzescuilie",
@@ -10,6 +10,10 @@ try:
                                          database = "starwars")
     cursor = connection.cursor()
     root = Tk()
+
+    w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+    root.geometry("%dx%d+0+0" % (w, h))
+
     root.title('Star')
     img = PhotoImage(file='star.png')
     root.iconphoto(True, img)
@@ -116,29 +120,22 @@ try:
         interogare.title(e.get())
         interogare.configure(background='#5e0061')
 
-        # frame_o = LabelFrame(interogare, padx=100, pady=100)
-        # frame_o.pack(padx=10, pady=10)
-        # frame_o.configure(background='#5e0061')
 
-        # apasa = Button(frame_o, text='oare', padx=80, pady=10).grid(row=0, column=0)
-
-        # apasa2 = Button(frame_o, text='oare2', padx=80, pady=10).grid(row=1, column=1)
         def data():
-            for i in range(50):  # len(x.fct())/2
-                Label(frame, text=i).grid(row=i, column=0)
-                Label(frame, text="my text" + str(i)).grid(row=i, column=1)
-                Label(frame, text="..........").grid(row=i, column=2)
+            Label(frame, text = f.join(), padx = 200).grid(row = 0, column = 2, columnspan = 20)
+            #for i in range(50):
+             #   Label(frame, text=i).grid(row=i, column=0)
+              #  Label(frame, text="my text" + str(i)).grid(row=i, column=1)
+               # Label(frame, text="..........").grid(row=i, column=2)
 
         def myfunction(event):
-            canvas.configure(scrollregion=canvas.bbox("all"), width=400, height=400)
+            canvas.configure(scrollregion=canvas.bbox("all"), width=1000, height=800)
 
-        sizex = 800
-        sizey = 600
-        posx = 100
-        posy = 100
-        interogare.wm_geometry("%dx%d+%d+%d" % (sizex, sizey, posx, posy))
+        w, h = interogare.winfo_screenwidth(), interogare.winfo_screenheight()
+        interogare.geometry("%dx%d+0+0" % (w, h))
 
-        myframe = Frame(interogare, relief=GROOVE, width=50, height=100, bd=1)
+
+        myframe = Frame(interogare, relief=GROOVE, width=500, height=100, bd=1)
         myframe.place(x=10, y=10)
 
         myframe.configure(background='#5e0061')
@@ -169,7 +166,14 @@ try:
     root.mainloop()
 
 except mysql.connector.Error as error:
+    if error.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print("Something is wrong with your user name or password")
+    elif error.errno == errorcode.ER_BAD_DB_ERROR:
+        print("Database does not exist")
+    else:
+        print(error)
     print("Failed to execute stored procedure: {}".format(error))
+
 finally:
     if (connection.is_connected()):
         cursor.close()
