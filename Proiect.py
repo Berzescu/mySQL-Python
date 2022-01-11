@@ -5,10 +5,10 @@ from PIL import ImageTk, Image
 
 try:
 
-    connection = mysql.connector.connect(host="lefti.cm.upt.ro",
-                                         user="berzescuilie",
-                                         password="Cactus98",
-                                         database="starwars")
+    connection = mysql.connector.connect(host="",
+                                         user="",
+                                         password="",
+                                         database="")
     cursor = connection.cursor()
 
 
